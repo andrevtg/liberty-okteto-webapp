@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  liberty:
+    image: maven:3-jdk-11
+    ports:
+      - 8080:8080 # http
+      - 7777:7777 # debug
+    command: mvn liberty:dev -Duser.home=/var/maven
+    # some extra user/env/volume magic to deal with permissions in Linux
+    user: $UID
+    environment:
+      MAVEN_CONFIG: /var/maven/.m2
+    volumes:
+      # Cache maven dependencies
+      - $HOME/.m2:/var/maven/.m2
+      # Mount the application source and target directories
+      - .:/app
+    # Run maven inside the application directory
+    working_dir: /app

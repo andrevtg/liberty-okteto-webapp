@@ -1,0 +1,12 @@
+name: liberty-okteto-webapp
+image: maven:3-jdk-11
+command:
+- bash
+workdir: /okteto
+volumes:
+- /root/.m2
+forward:
+- 8080:8080 # http
+- 7777:7777 # debug (jdk11 demands localhost)
+environment:
+- WLP_DEBUG_REMOTE=y # -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:7777
